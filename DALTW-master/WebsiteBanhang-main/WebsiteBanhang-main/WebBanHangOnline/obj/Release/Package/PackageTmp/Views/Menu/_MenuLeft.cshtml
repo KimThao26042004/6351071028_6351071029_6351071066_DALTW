@@ -1,0 +1,30 @@
+﻿@model IEnumerable<WebBanHangOnline.Models.EF.ProductCategory>
+
+@if (Model != null && Model.Any())
+{
+    // Lấy đường dẫn hiện tại
+    var currentPath = Request.Url.AbsolutePath;
+
+    <ul class="sidebar_categories">
+        @foreach (var item in Model)
+        {
+            // Kiểm tra nếu danh mục đang active
+            var cssClass = ViewBag.CateId == item.Id ? "active" : "";
+
+            // Xác định URL dựa trên trang hiện tại
+            var baseUrl = (currentPath.Contains("/khuyen-mai") || currentPath.Contains("/sale") || currentPath.Contains("danh-muc-san-pham-sale"))
+                ? "/danh-muc-san-pham-sale"
+                : "/danh-muc-san-pham";
+
+            <li class="@cssClass">
+                <a href="@baseUrl/@item.Alias-@(item.Id)">
+                    @if (cssClass == "active")
+                    {
+                        <span><i class="fa fa-angle-double-right" aria-hidden="true"></i></span>
+                    }
+                    @item.Title
+                </a>
+            </li>
+        }
+    </ul>
+}
